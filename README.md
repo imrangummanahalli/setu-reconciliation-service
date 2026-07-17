@@ -132,6 +132,10 @@ runs locally and in the cloud.
 - **Live deployment:** **https://setu-reconciliation-zpf3.onrender.com**
   - Interactive docs: https://setu-reconciliation-zpf3.onrender.com/docs
   - Health check: https://setu-reconciliation-zpf3.onrender.com/health
+- **Postman collection:** [`postman_collection.json`](postman_collection.json) —
+  import it into Postman to exercise every endpoint. Its `base_url` variable
+  already points at the live deployment (switch to `http://localhost:8000` to
+  hit a local instance).
 - On [Render](https://render.com): *New → Blueprint → point at this repo*. The
   free plan runs the bundled SQLite image directly. For Postgres, provision a
   managed instance and set `DATABASE_URL` (see below), then run `python seed.py`
