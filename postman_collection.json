@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Setu Payment Reconciliation Service",
+    "description": "Idempotent payment-event ingestion, transaction queries, and reconciliation reporting. Set the {{base_url}} collection variable to your deployment (default http://localhost:8000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "transaction_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] }
+      }
+    },
+    {
+      "name": "Ingest single event",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"demo-evt-1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-1\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
+      }
+    },
+    {
+      "name": "Ingest single event (DUPLICATE - idempotency check)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"demo-evt-1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-1\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
+      }
+    },
+    {
+      "name": "Ingest batch of events",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"event_id\": \"demo-evt-2\",\n    \"event_type\": \"payment_processed\",\n    \"transaction_id\": \"demo-txn-1\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T10:05:00+00:00\"\n  },\n  {\n    \"event_id\": \"demo-evt-3\",\n    \"event_type\": \"settled\",\n    \"transaction_id\": \"demo-txn-1\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T12:00:00+00:00\"\n  }\n]"
+        },
+        "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
+      }
+    },
+    {
+      "name": "List transactions (filter + paginate + sort)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/transactions?merchant_id=merchant_1&status=settled&sort_by=first_event_at&order=desc&limit=10&offset=0",
+          "host": ["{{base_url}}"],
+          "path": ["transactions"],
+          "query": [
+            { "key": "merchant_id", "value": "merchant_1" },
+            { "key": "status", "value": "settled" },
+            { "key": "start", "value": "2026-01-01T00:00:00Z", "disabled": true },
+            { "key": "end", "value": "2026-12-31T00:00:00Z", "disabled": true },
+            { "key": "sort_by", "value": "first_event_at" },
+            { "key": "order", "value": "desc" },
+            { "key": "limit", "value": "10" },
+            { "key": "offset", "value": "0" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get transaction detail (with event history)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/transactions/demo-txn-1",
+          "host": ["{{base_url}}"],
+          "path": ["transactions", "demo-txn-1"]
+        }
+      }
+    },
+    {
+      "name": "Reconciliation summary (by merchant + status)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/reconciliation/summary?group_by=merchant,status",
+          "host": ["{{base_url}}"],
+          "path": ["reconciliation", "summary"],
+          "query": [{ "key": "group_by", "value": "merchant,status" }]
+        }
+      }
+    },
+    {
+      "name": "Reconciliation summary (by date)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/reconciliation/summary?group_by=date",
+          "host": ["{{base_url}}"],
+          "path": ["reconciliation", "summary"],
+          "query": [{ "key": "group_by", "value": "date" }]
+        }
+      }
+    },
+    {
+      "name": "Reconciliation discrepancies",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/reconciliation/discrepancies",
+          "host": ["{{base_url}}"],
+          "path": ["reconciliation", "discrepancies"],
+          "query": [{ "key": "merchant_id", "value": "merchant_1", "disabled": true }]
+        }
+      }
+    }
+  ]
+}

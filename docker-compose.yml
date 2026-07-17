@@ -1,0 +1,42 @@
+# docker-compose for the reconciliation service.
+#
+#   docker compose up --build
+#
+# Brings up Postgres + the FastAPI app. The app waits for Postgres to be
+# healthy, seeds sample_events.json on first boot (idempotent, so re-runs are
+# safe), then serves on http://localhost:8000  (docs at /docs).
+#
+# To run WITHOUT Postgres (bundled SQLite instead), comment out the `db`
+# service + its depends_on/DATABASE_URL and the app falls back to a local
+# SQLite file automatically.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: recon
+      POSTGRES_PASSWORD: recon
+      POSTGRES_DB: recon
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recon -d recon"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://recon:recon@db:5432/recon
+      PORT: "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

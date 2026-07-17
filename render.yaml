@@ -1,0 +1,15 @@
+# Render.com blueprint — one-click deploy of the reconciliation service.
+# Uses Docker so the same image runs locally and in the cloud.
+services:
+  - type: web
+    name: setu-reconciliation
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      # Default is bundled SQLite (self-contained). To use managed Postgres,
+      # provision a Render Postgres instance and set:
+      #   DATABASE_URL = postgresql+psycopg://<user>:<pass>@<host>/<db>
+      - key: PORT
+        value: 8000
