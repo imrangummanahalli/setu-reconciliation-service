@@ -23,7 +23,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"event_id\": \"demo-evt-1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-1\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
+          "raw": "{\n  \"event_id\": \"demo-evt-a1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-a\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
         },
         "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
       }
@@ -35,7 +35,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"event_id\": \"demo-evt-1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-1\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
+          "raw": "{\n  \"event_id\": \"demo-evt-a1\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"demo-txn-a\",\n  \"merchant_id\": \"merchant_1\",\n  \"merchant_name\": \"Acme\",\n  \"amount\": 1200.50,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-01T10:00:00+00:00\"\n}"
         },
         "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
       }
@@ -47,7 +47,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "[\n  {\n    \"event_id\": \"demo-evt-2\",\n    \"event_type\": \"payment_processed\",\n    \"transaction_id\": \"demo-txn-1\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T10:05:00+00:00\"\n  },\n  {\n    \"event_id\": \"demo-evt-3\",\n    \"event_type\": \"settled\",\n    \"transaction_id\": \"demo-txn-1\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T12:00:00+00:00\"\n  }\n]"
+          "raw": "[\n  {\n    \"event_id\": \"demo-evt-a2\",\n    \"event_type\": \"payment_processed\",\n    \"transaction_id\": \"demo-txn-a\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T10:05:00+00:00\"\n  },\n  {\n    \"event_id\": \"demo-evt-a3\",\n    \"event_type\": \"settled\",\n    \"transaction_id\": \"demo-txn-a\",\n    \"merchant_id\": \"merchant_1\",\n    \"amount\": 1200.50,\n    \"currency\": \"INR\",\n    \"timestamp\": \"2026-01-01T12:00:00+00:00\"\n  }\n]"
         },
         "url": { "raw": "{{base_url}}/events", "host": ["{{base_url}}"], "path": ["events"] }
       }
@@ -78,9 +78,9 @@
       "request": {
         "method": "GET",
         "url": {
-          "raw": "{{base_url}}/transactions/demo-txn-1",
+          "raw": "{{base_url}}/transactions/demo-txn-a",
           "host": ["{{base_url}}"],
-          "path": ["transactions", "demo-txn-1"]
+          "path": ["transactions", "demo-txn-a"]
         }
       }
     },
