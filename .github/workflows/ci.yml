@@ -1,0 +1,38 @@
+name: CI
+
+# Runs on every push and pull request to main. Green here is the gate:
+# Render is configured to auto-deploy main, so tests must pass before code ships.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run test suite
+        run: pytest -q
+
+  docker-build:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Proves the same image that deploys to Render still builds from scratch.
+      - name: Build image
+        run: docker build -t setu-reconciliation:ci .

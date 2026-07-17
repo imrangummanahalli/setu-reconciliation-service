@@ -139,6 +139,14 @@ runs locally and in the cloud.
 > **Reviewer note:** the service is fully functional locally with the two
 > commands above if the hosted URL is unavailable.
 
+### CI/CD
+
+- **CI** — [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs the full
+  test suite and builds the Docker image on every push and pull request to
+  `main`. Green here is the gate before anything ships.
+- **CD** — Render auto-deploys `main` on each push. The **same Docker image**
+  is built in CI and run in production, so "works in CI" means "works deployed".
+
 ---
 
 ## Architecture overview
