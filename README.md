@@ -129,15 +129,21 @@ curl "http://localhost:8000/reconciliation/discrepancies"
 The repo ships a `render.yaml` blueprint and a `Dockerfile`, so the same image
 runs locally and in the cloud.
 
-- **Public deployment:** `<ADD YOUR LIVE URL HERE>` — e.g. `https://setu-reconciliation.onrender.com`
-- Health check: `GET /health`
+- **Live deployment:** **https://setu-reconciliation-zpf3.onrender.com**
+  - Interactive docs: https://setu-reconciliation-zpf3.onrender.com/docs
+  - Health check: https://setu-reconciliation-zpf3.onrender.com/health
 - On [Render](https://render.com): *New → Blueprint → point at this repo*. The
   free plan runs the bundled SQLite image directly. For Postgres, provision a
   managed instance and set `DATABASE_URL` (see below), then run `python seed.py`
   once as a one-off job.
 
-> **Reviewer note:** the service is fully functional locally with the two
-> commands above if the hosted URL is unavailable.
+> **⏱️ Free-tier cold start:** the service sleeps after ~15 min of inactivity, so
+> the **first request after idle may take 30–60s** to wake up — this is Render's
+> free plan, not a broken deploy. Subsequent requests are fast. The SQLite data
+> is seeded on boot, so a restart simply re-seeds the same sample data.
+
+> **Reviewer note:** the service is also fully functional locally with the single
+> `docker compose up --build` command above if the hosted URL is unavailable.
 
 ### CI/CD
 
@@ -365,6 +371,10 @@ uvicorn app.main:app
 - Keyset pagination and a `Cache-Control`/ETag on summary endpoints.
 - `INSERT ... ON CONFLICT DO NOTHING` for true bulk idempotent ingest on Postgres.
 - Structured logging + request IDs and a metrics endpoint.
+- **Infrastructure as code:** for a production AWS target I'd provision the stack
+  with Terraform (ECS/Fargate + RDS Postgres + ALB). Here I chose a `Dockerfile` +
+  Render blueprint so the reviewer's setup stays a single command — the same
+  container image would carry over to an ECS task definition unchanged.
 
 ---
 

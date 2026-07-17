@@ -1,11 +1,11 @@
 {
   "info": {
     "name": "Setu Payment Reconciliation Service",
-    "description": "Idempotent payment-event ingestion, transaction queries, and reconciliation reporting. Set the {{base_url}} collection variable to your deployment (default http://localhost:8000).",
+    "description": "Idempotent payment-event ingestion, transaction queries, and reconciliation reporting. The {{base_url}} variable defaults to the live deployment (https://setu-reconciliation-zpf3.onrender.com); change it to http://localhost:8000 to run against a local instance.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "base_url", "value": "https://setu-reconciliation-zpf3.onrender.com" },
     { "key": "transaction_id", "value": "" }
   ],
   "item": [
